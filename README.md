@@ -4,11 +4,17 @@ YET ANOTHER docker-ized nginx proxy with let's encrypt certbot for ssl certz!
 
 on start this image will check if installed certs for the list of `DOMAINS` exist and if they do __not__ then run `certbot` in standalone (so nginx doesn't exit complaining about non-existing files). this image also uses a daily cron to check/update ssl certificates and (if new certs are generated) reload nginx. all-in-one container; w00t!
 
+this container will only request certificates after `certbot --dry-run` runs successfully; helping to avoid burning through certificate requests. 
+
 ### example
 
 __docker-compose.yml__ 
 
-_note_ make sure dir `./letsencrypt` exists & DOMAINS var can be semicolon (;) and comma (,) seperated (for example: `DOMAINS=www.example.net,example.net;api.foobar.site,assets.foobar.site`)
+_notes_ 
+
+1. make sure dir `./letsencrypt` exists  
+2. set EMAIL environment var to your email address
+3. DOMAINS var can be semicolon (;) and comma (,) seperated (for example: `DOMAINS=www.example.net,example.net;api.foobar.site,assets.foobar.site`)
 
 ```yml
 version: "2"
@@ -17,7 +23,7 @@ services:
     image: 3dwardsharp/nginx-certbot
     environment:
       - DOMAINS=demo.youoke.party,youoke.party
-      - EMAIL=edward@edwardsharp.net
+      - EMAIL=hello@youoke.party
       - BASE_SERVER=youoke.party
       - BASE_SERVER_PROXY=helloworld
       - BASE_SERVER_PORT=80
