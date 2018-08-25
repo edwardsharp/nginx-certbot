@@ -2,7 +2,9 @@
 
 YET ANOTHER docker-ized nginx proxy with let's encrypt certbot for ssl certz!
 
-### demo
+on start this image will check if installed certs for the list of `DOMAINS` exist and if they do __not__ then run `certbot` in standalone (so nginx doesn't exit complaining about non-existing files). this image also uses a daily cron to check/update ssl certificates and (if new certs are generated) reload nginx. all-in-one container; w00t!
+
+### example
 
 __docker-compose.yml__ 
 
