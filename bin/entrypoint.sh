@@ -22,7 +22,9 @@ for DOMAINS in "${CERTS[@]}"; do
   	# "/etc/letsencrypt/live/${DOMAIN}/privkey.pem"
   	if [ ! -f "/etc/letsencrypt/live/$DOMAIN/fullchain.pem" ]; then
     	echo "running certbot for ${DOMAIN}"
+    	EXITSTATUS=0
 	  	certbot certonly \
+	  		--quiet \
 				--agree-tos \
 				-d "$DOMAIN" \
 				--email "$EMAIL" \
@@ -37,6 +39,7 @@ for DOMAINS in "${CERTS[@]}"; do
 			if [ $EXITSTATUS -eq 0 ]; then
 				echo "dry run success! fetching cert for $DOMAINS"
 				certbot certonly \
+				  --quiet \
 					--agree-tos \
 					-d "$DOMAIN" \
 					--email "$EMAIL" \
