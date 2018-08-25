@@ -4,7 +4,7 @@ services:
     image: 3dwardsharp/nginx-certbot:0.0.1
     environment:
       - DOMAINS=demo.youoke.party,youoke.party
-      - EMAIL=edward@edwardsharp.net
+      - EMAIL=hello@youoke.party
       - BASE_SERVER=youoke.party
       - BASE_SERVER_PROXY=helloworld
       - BASE_SERVER_PORT=80
