@@ -6,8 +6,8 @@ set -e
 [[ -z "$DOMAINS" ]] && MISSING="$MISSING DOMAINS"
 [[ -z "$EMAIL" ]] && MISSING="$MISSING EMAIL"
 if [[ -n "$MISSING" ]]; then
-	echo "Missing required environment variables: $MISSING" >&2
-	exit 1
+  echo "Missing required environment variables: $MISSING" >&2
+  exit 1
 fi
 
 # certificatez are separated by semi-colon (;). sub-domainz on each certificate are
@@ -16,41 +16,41 @@ CERTS=(${DOMAINS//;/ })
 
 # dry-run certbot first, if exit is ok (0) then omit --dry-run
 for DOMAINS in "${CERTS[@]}"; do
-	SUBDOMAINS=(${DOMAINS//,/ })
-	for DOMAIN in "${SUBDOMAINS[@]}"; do
-		# check if certz for $DOMAIN exist
-  	# "/etc/letsencrypt/live/${DOMAIN}/privkey.pem"
-  	if [ ! -f "/etc/letsencrypt/live/$DOMAIN/fullchain.pem" ]; then
-    	echo "running certbot for ${DOMAIN}"
-    	EXITSTATUS=0
-	  	certbot certonly \
-	  		--quiet \
-				--agree-tos \
-				-d "$DOMAIN" \
-				--email "$EMAIL" \
-				--expand \
-				--noninteractive \
-				--standalone \
-				--preferred-challenges http \
-				--dry-run \
-				$OPTIONS \
-				|| EXITSTATUS=$? && true ; 
+  SUBDOMAINS=(${DOMAINS//,/ })
+  for DOMAIN in "${SUBDOMAINS[@]}"; do
+    # check if certz for $DOMAIN exist
+    # "/etc/letsencrypt/live/${DOMAIN}/privkey.pem"
+    if [ ! -f "/etc/letsencrypt/live/$DOMAIN/fullchain.pem" ]; then
+      echo "running certbot for ${DOMAIN}"
+      EXITSTATUS=0
+      certbot certonly \
+        --quiet \
+        --agree-tos \
+        -d "$DOMAIN" \
+        --email "$EMAIL" \
+        --expand \
+        --noninteractive \
+        --standalone \
+        --preferred-challenges http \
+        --dry-run \
+        $OPTIONS \
+        || EXITSTATUS=$? && true ; 
 
-			if [ $EXITSTATUS -eq 0 ]; then
-				echo "dry run success! fetching cert for $DOMAIN"
-				certbot certonly \
-				  --quiet \
-					--agree-tos \
-					-d "$DOMAIN" \
-					--email "$EMAIL" \
-					--expand \
-					--noninteractive \
-					--standalone \
-					--preferred-challenges http \
-					$OPTIONS 
-			fi
-		fi
-	done
+      if [ $EXITSTATUS -eq 0 ]; then
+        echo "dry run success! fetching cert for $DOMAIN"
+        certbot certonly \
+          --quiet \
+          --agree-tos \
+          -d "$DOMAIN" \
+          --email "$EMAIL" \
+          --expand \
+          --noninteractive \
+          --standalone \
+          --preferred-challenges http \
+          $OPTIONS 
+      fi
+    fi
+  done
 done
 
 crond
