@@ -37,7 +37,7 @@ for DOMAINS in "${CERTS[@]}"; do
 				|| EXITSTATUS=$? && true ; 
 
 			if [ $EXITSTATUS -eq 0 ]; then
-				echo "dry run success! fetching cert for $DOMAINS"
+				echo "dry run success! fetching cert for $DOMAIN"
 				certbot certonly \
 				  --quiet \
 					--agree-tos \
