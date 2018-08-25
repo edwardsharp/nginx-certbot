@@ -31,8 +31,8 @@ for DOMAINS in "${CERTS[@]}"; do
 				--standalone \
 				--preferred-challenges http \
 				--dry-run \
-				$OPTIONS
-				|| EXITSTATUS=$? && true ; 
+				$OPTIONS \
+				|| EXITSTATUS=$? && true
 
 			if [ $EXITSTATUS -eq 0 ]; then
 				echo "dry run success! fetching cert for $DOMAINS"
