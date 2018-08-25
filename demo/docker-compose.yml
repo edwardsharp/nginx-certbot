@@ -1,7 +1,7 @@
 version: "2"
 services:
   nginx-certbot:
-    image: 3dwardsharp/nginx-certbot
+    image: 3dwardsharp/nginx-certbot:0.0.1
     environment:
       - DOMAINS=demo.youoke.party,youoke.party
       - EMAIL=edward@edwardsharp.net

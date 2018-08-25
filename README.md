@@ -1,6 +1,6 @@
 # nginx-certbot
 
-YET ANOTHER docker-ized nginx proxy with let's encrypt certbot for ssl certz!
+YET ANOTHER docker-ized nginx proxy with let's encrypt certbot for ssl certz; based on alpine!
 
 on start this image will check if installed certs for the list of `DOMAINS` exist and if they do __not__ then run `certbot` in standalone (so nginx doesn't exit complaining about non-existing files). this image also uses a daily cron to check/update ssl certificates and (if new certs are generated) reload nginx. all-in-one container; w00t!
 
@@ -21,7 +21,7 @@ _notes_
 version: "2"
 services:
   nginx-certbot:
-    image: 3dwardsharp/nginx-certbot
+    image: 3dwardsharp/nginx-certbot:0.0.1
     environment:
       - DOMAINS=demo.youoke.party,youoke.party
       - EMAIL=hello@youoke.party
