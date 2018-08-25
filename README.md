@@ -15,6 +15,7 @@ _notes_
 1. make sure dir `./letsencrypt` exists  
 2. set EMAIL environment var to your email address
 3. DOMAINS var can be semicolon (;) and comma (,) seperated (for example: `DOMAINS=www.example.net,example.net;api.foobar.site,assets.foobar.site`)
+4. bind mount `/etc/nginx/snippets/ssl.conf` with your implementation to improve cipher suite (and use TLS 1.3!)
 
 ```yml
 version: "2"
