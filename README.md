@@ -1,12 +1,14 @@
 # nginx-certbot
 
-docker-ized nginx with let's encrypt certbot for ssl certz!
+YET ANOTHER docker-ized nginx proxy with let's encrypt certbot for ssl certz!
 
 ### demo
 
-__docker-compose.yml__
+__docker-compose.yml__ 
 
-```sh
+_note_ make sure dir `./letsencrypt` exists & DOMAINS var can be semicolon (;) and comma (,) seperated (for example: `DOMAINS=www.example.net,example.net;api.foobar.site,assets.foobar.site`)
+
+```yml
 version: "2"
 services:
   nginx-certbot:
@@ -14,25 +16,29 @@ services:
     environment:
       - DOMAINS=demo.youoke.party,youoke.party
       - EMAIL=edward@edwardsharp.net
+      - BASE_SERVER=youoke.party
+      - BASE_SERVER_PROXY=helloworld
+      - BASE_SERVER_PORT=80
+      - ADMIN_SERVER=demo.youoke.party
+      - ADMIN_SERVER_PROXY=demo
+      - ADMIN_SERVER_PORT=80
     volumes:
-      - /home/core/letsencrypt:/etc/letsencrypt
+      - ./letsencrypt:/etc/letsencrypt
       - ./nginx.template:/etc/nginx/conf.d/nginx.template
     ports:
       - "80:80"
       - "443:443"
-    environment:
-      - BASE_SERVER=youoke.party
-      - BASE_SERVER_PROXY="helloworld:80"
-      - ADMIN_SERVER=demo.youoke.party
-      - ADMIN_SERVER_PROXY="demo:80"
     command: /bin/bash -c "envsubst < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
   helloworld: 
     image: 3dwardsharp/helloworld
   demo: 
     image: 3dwardsharp/helloworld
+
 ```
 
 __nginx.template__
+
+_note:_ do as your nginx-configuration-heart desires, just a simple example using `envsubst`: 
 
 ```
 server {
@@ -66,7 +72,7 @@ server {
   include /etc/nginx/snippets/ssl.conf;
 
   location / {
-    proxy_pass http://${BASE_SERVER_PROXY};
+    proxy_pass http://${BASE_SERVER_PROXY}:${BASE_SERVER_PORT};
     client_max_body_size 100m;
     proxy_buffering off;
   }
@@ -81,7 +87,7 @@ server {
   include /etc/nginx/snippets/ssl.conf;
 
   location / {
-    proxy_pass http://${ADMIN_SERVER_PROXY};
+    proxy_pass http://${ADMIN_SERVER_PROXY}:${ADMIN_SERVER_PORT};
     client_max_body_size 100m;
     proxy_buffering off;
   }
