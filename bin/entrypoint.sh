@@ -31,9 +31,9 @@ for DOMAINS in "${CERTS[@]}"; do
 				--standalone \
 				--preferred-challenges http \
 				--dry-run \
-				$OPTIONS
+				$OPTIONS \
+				|| EXITSTATUS=$? && true ; 
 
-			EXITSTATUS=$?
 			if [ $EXITSTATUS -eq 0 ]; then
 				echo "dry run success! fetching cert for $DOMAINS"
 				certbot certonly \
@@ -44,10 +44,12 @@ for DOMAINS in "${CERTS[@]}"; do
 					--noninteractive \
 					--standalone \
 					--preferred-challenges http \
-					$OPTIONS
+					$OPTIONS 
 			fi
 		fi
 	done
 done
+
+crond
 
 exec "$@"

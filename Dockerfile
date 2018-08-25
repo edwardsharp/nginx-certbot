@@ -27,4 +27,4 @@ RUN ln -fs /opt/letsencrypt/bin/renew_certs.sh /etc/periodic/daily/
 
 WORKDIR /opt/letsencrypt/bin/
 
-ENTRYPOINT ["/sbin/tini", "--", "/opt/letsencrypt/bin/entrypoint.sh", "crond", "-f"]
+ENTRYPOINT ["/sbin/tini", "--", "/opt/letsencrypt/bin/entrypoint.sh"]
