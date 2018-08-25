@@ -29,7 +29,7 @@ server {
   include /etc/nginx/snippets/ssl.conf;
 
   location / {
-    proxy_pass http://${BASE_SERVER_PROXY};
+    proxy_pass http://${BASE_SERVER_PROXY}:${BASE_SERVER_PORT};
     client_max_body_size 100m;
     proxy_buffering off;
   }
@@ -44,7 +44,7 @@ server {
   include /etc/nginx/snippets/ssl.conf;
 
   location / {
-    proxy_pass http://${ADMIN_SERVER_PROXY};
+    proxy_pass http://${ADMIN_SERVER_PROXY}:${ADMIN_SERVER_PORT};
     client_max_body_size 100m;
     proxy_buffering off;
   }
