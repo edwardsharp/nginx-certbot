@@ -31,7 +31,7 @@ for DOMAINS in "${CERTS[@]}"; do
 				--standalone \
 				--preferred-challenges http \
 				--dry-run \
-				$OPTIONS \
+				$OPTIONS
 				|| EXITSTATUS=$? && true ; 
 
 			if [ $EXITSTATUS -eq 0 ]; then
