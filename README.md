@@ -37,7 +37,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    command: /bin/bash -c "envsubst < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+    command: /bin/bash -c "envsubst '$${BASE_SERVER},$${ADMIN_SERVER}' < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
   helloworld: 
     image: 3dwardsharp/helloworld
   demo: 
@@ -47,7 +47,9 @@ services:
 
 __nginx.template__
 
-_note:_ do as your nginx-configuration-heart desires, just a simple example using `envsubst`: 
+do as your nginx-configuration-heart desires, just a simple example using `envsubst`: 
+
+_note:_ the `comand` for the nginx-certbot (3dwardsharp/nginx-certbot) instance in `docker-compose.yml`: `command: /bin/bash -c "envsubst '$${BASE_SERVER},$${ADMIN_SERVER}' < /etc/nginx/conf.d/nginx.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"` you need to explicitly tell `envsubst` about the variables to substitute like `'$${BASE_SERVER},$${ADMIN_SERVER}'` note the `$$`. otherwise envsubst will replace other `$` variables in nginx.template with blank strings.
 
 ```
 server {
